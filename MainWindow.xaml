@@ -1,0 +1,246 @@
+﻿<Window x:Class="GUIHOMEASSIST.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:component="clr-namespace:GUIHOMEASSIST.Components"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:chart="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" xmlns:viewmodels="clr-namespace:GUIHOMEASSIST.Application.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        Title="MainWindow" Height="700" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="1" Margin="10" FontSize="24" Height="39.5">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <i:InvokeCommandAction Command="{Binding ConnectCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            Connect
+        </Button>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <materialDesign:Card Grid.Row="0"
+                                         Margin="10"
+                                         Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Style="{StaticResource ModuleTitle}" Text="Cài đặt thông số"/>
+                        <TextBox Grid.Row="1"
+                                 materialDesign:HintAssist.Hint="Nhiệt độ tiêu chuẩn (độ C)"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 Text="{Binding SetTemp, Mode=TwoWay}"/>
+                        <TextBox Grid.Row="2"
+                                 materialDesign:HintAssist.Hint="Nồng độ tiêu chuẩn (%)"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                        <Button Grid.Row="3" Margin="10" Content="OK" Padding="0" Width="35" Height="20">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding SetCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
+                </materialDesign:Card>
+
+                <materialDesign:Card Grid.Row="1" Margin="10" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Style="{StaticResource ModuleTitle}" Text="Giám sát" HorizontalAlignment="Center"/>
+                        <Border Grid.Row="1" Style="{StaticResource Frame}"
+                                        Padding="5"
+                                        Margin="10">
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" 
+                                           Margin="5" Style="{StaticResource DeviceTitle}" Text="Nhiệt độ: " HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Temperature, Mode=TwoWay, StringFormat=N2}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" Margin="5" Text="°C" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" 
+                                           Margin="5" Style="{StaticResource DeviceTitle}" Text="Độ ẩm: " HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Humidity, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="1" Grid.Column="2" Margin="5" Text="ppm" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" 
+                                           Margin="5" Style="{StaticResource DeviceTitle}" Text="Nồng độ khí: " HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding Humidity, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="2" Grid.Column="2" Margin="5" Text="%" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Grid>
+
+                        </Border>
+
+
+
+
+
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource DeviceTitle}" Text="Quạt" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource DeviceTitle}" Text="Chuông báo khói" HorizontalAlignment="Center"/>
+                            <materialDesign:PackIcon 
+                                Grid.Row="1"
+                            Grid.Column="0"  
+                            HorizontalAlignment="Center"
+                            Kind="Fan"
+                            Height="150"
+                            Width="100"
+                            Visibility="{Binding FanONVis}"
+                            x:Name="fanon" 
+                            RenderTransformOrigin="0.5,0.5">
+                                <materialDesign:PackIcon.RenderTransform>
+                                    <RotateTransform Angle="{Binding Deg}"/>
+                                </materialDesign:PackIcon.RenderTransform>
+                            </materialDesign:PackIcon>
+                            <materialDesign:PackIcon 
+                             Grid.Row="1"
+                            Grid.Column="0"  
+                            HorizontalAlignment="Center"
+                            Kind="FanOff"
+                            Height="150"
+                            Width="100"
+                            Visibility="{Binding FanOFFVis}"
+                            x:Name="fanoff" 
+                            RenderTransformOrigin="1.997,-0.078">
+                            </materialDesign:PackIcon>
+
+                            <materialDesign:PackIcon 
+                            Grid.Row="1"
+                            Grid.Column="1"  
+                            Kind="BellAlert"
+                            HorizontalAlignment="Center"
+                                                     Height="150"
+                                                     Width="100"
+                                                     x:Name="loaon"
+                                                     Visibility="{Binding BellONVis}"/>
+
+                            <materialDesign:PackIcon 
+                             Grid.Row="1"
+                            Grid.Column="1" 
+                            Kind="BellOff"
+                            HorizontalAlignment="Center"
+                                                     Height="150"
+                                                     Width="100"
+                                                     x:Name="loaoff"
+                                                     Visibility="{Binding BellOFFVis}"/>
+
+                            <Rectangle 
+                             Grid.Row="1"
+                            Grid.Column="1"
+                            Fill="White"
+                                           x:Name="Animation"
+                                           Visibility="{Binding Blank}" Width="20" Height="50" Margin="114,50,21,50"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource DeviceTitle}" Text="Đèn WELCOME" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource DeviceTitle}" Text="Đèn báo khói" HorizontalAlignment="Center"/>
+                            <component:Indicator Grid.Row="3" Grid.Column="0" Width="23" Height="23" Margin="5"/>
+                            <component:Indicator Grid.Row="3" Grid.Column="1" Width="23" Height="23" Margin="5" OnColor="Orange" State="{Binding Warning, Mode=TwoWay}"/>
+                            
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource DeviceTitle}" Text="Đèn 1" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource DeviceTitle}" Text="Đèn 2" HorizontalAlignment="Center"/>
+                            <Grid Grid.Row="5" Grid.Column="0">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <ToggleButton Margin="5,5,10,5" IsChecked="{Binding ToggleLed1, Mode=TwoWay}"/>
+                                    <component:Indicator Width="23" Height="23" HorizontalContentAlignment="Stretch" Margin="10,0,0,0" State="{Binding Led1, Mode=TwoWay}"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="5" Grid.Column="1">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <ToggleButton Margin="5,5,10,5" IsChecked="{Binding ToggleLed2, Mode=TwoWay}"/>
+                                    <component:Indicator Width="23" Height="23" HorizontalContentAlignment="Stretch" Margin="10,0,0,0" State="{Binding Led2, Mode=TwoWay}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
+                </materialDesign:Card>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Đồ thị" Style="{StaticResource ModuleTitle}"/>
+                <materialDesign:Card Grid.Row="1" Margin="5">
+                    <chart:CartesianChart Series="{Binding SeriesCollection1}"
+                                      LegendLocation="Right">
+                        <chart:CartesianChart.AxisX>
+                            <chart:Axis Title="Thời gian" Labels="{Binding Lables1}"></chart:Axis>
+                        </chart:CartesianChart.AxisX>
+                        
+                        <chart:CartesianChart.AxisY  >
+                            <chart:Axis Title="Nhiệt độ (°C)" ></chart:Axis>
+                        </chart:CartesianChart.AxisY>
+                    </chart:CartesianChart>
+                </materialDesign:Card>
+
+                <materialDesign:Card Grid.Row="2" Margin="5">
+                    <chart:CartesianChart  Series="{Binding SeriesCollection2}"
+                                      LegendLocation="Right">
+                        <chart:CartesianChart.AxisX>
+                            <chart:Axis Title="Thời gian" Labels="{Binding Lables2}"></chart:Axis>
+                        </chart:CartesianChart.AxisX>
+
+                        <chart:CartesianChart.AxisY  >
+                            <chart:Axis Title="Nồng độ (%)"></chart:Axis>
+                        </chart:CartesianChart.AxisY>
+                    </chart:CartesianChart>
+                </materialDesign:Card>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
+
