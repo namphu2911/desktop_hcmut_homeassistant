@@ -1,4 +1,4 @@
-﻿using GUIHOMEASSIST.Application.ViewModels;
+﻿using HomeAssistantGUI.Application.ViewModels;
 using LiveCharts;
 using LiveCharts.Wpf;
 using MQTTnet;
@@ -14,7 +14,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace GUIHOMEASSIST
+namespace HomeAssistantGUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

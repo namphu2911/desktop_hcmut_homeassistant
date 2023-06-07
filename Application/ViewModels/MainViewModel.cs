@@ -6,16 +6,16 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Windows.Input;
 using Timer = System.Timers.Timer;
-using MqttClient = GUIHOMEASSIST.Application.Communication.MqttClient;
+using MqttClient = HomeAssistantGUI.Application.Communication.MqttClient;
 using System.Collections.ObjectModel;
 using System;
-using GUIHOMEASSIST.Application.Communication;
+using HomeAssistantGUI.Application.Communication;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Collections.Generic;
 using System.Windows;
 
-namespace GUIHOMEASSIST.Application.ViewModels
+namespace HomeAssistantGUI.Application.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
@@ -26,15 +26,16 @@ namespace GUIHOMEASSIST.Application.ViewModels
         public bool IsMqttConnected => _mqttClient.IsConnected;
         public int Deg { get; set; } = 0;
         public double Temperature { get; set; }
-        public long Concentration { get; set; }
+        public double Concentration { get; set; }
         public long Humidity { get; set; }
-        public double SetTemp { get; set; } = 0;
-        public long SetConcentration { get; set; } = 0;
+        public double SetTemp { get; set; } = new();
+        public double SetGas { get; set; } = new();
         public bool ToggleLed1 { get; set; } = false;
         public bool ToggleLed2 { get; set; } = false;
         public bool Led1 { get; set; }
         public bool Led2 { get; set; }
         public bool Fanstatus { get; set; }
+        public bool LedWC { get; set; }
         public bool Warning { get; set; } 
         public bool A { get; set; } = true;
         public Visibility FanONVis { get; set; }
@@ -43,6 +44,7 @@ namespace GUIHOMEASSIST.Application.ViewModels
         public Visibility BellOFFVis { get; set; }
         public Visibility Blank { get; set; } = Visibility.Visible;
         public ICommand ConnectCommand { get; set; }
+        public ICommand DisconnectCommand { get; set; }
         public ICommand SetCommand { get; set; }
         public List<Tag> Tags { get; private set; }
         ///
@@ -104,6 +106,7 @@ namespace GUIHOMEASSIST.Application.ViewModels
             _timerbell.Elapsed += _TimerbellElapsed;
             _mqttClient.ApplicationMessageReceived += OnApplicationMessageReceived;
             ConnectCommand = new RelayCommand(Connect);
+            DisconnectCommand = new RelayCommand(Disconnect);
             SetCommand = new RelayCommand(Set);
             ///
             SeriesCollection1 = new SeriesCollection();
@@ -115,7 +118,7 @@ namespace GUIHOMEASSIST.Application.ViewModels
             Tags = new()
             {
                 new("Tempsetpoint",SetTemp),
-                new("Concentrationsetpoint",SetConcentration),
+                new("Gassetpoint",SetGas),
                 new("LED_1",ToggleLed1),
                 new("LED_2",ToggleLed2)
             };
@@ -172,15 +175,15 @@ namespace GUIHOMEASSIST.Application.ViewModels
             {
                 case "Temp":
                     Temperature = Convert.ToDouble(commandMessage.Value);
-                    Set();
                     NhietDo.Add(Temperature);
+                    NhietDoChuan.Add(SetTemp);
                     Lables1.Add(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second);
                     break;
 
                 case "Gas":
-                    Concentration = Convert.ToInt16(commandMessage.Value);
-                    Set();
+                    Concentration = Convert.ToDouble(commandMessage.Value);
                     KhiGas.Add(Concentration);
+                    KhiGasChuan.Add(SetGas);
                     Lables2.Add(DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second);
                     break;
 
@@ -229,8 +232,9 @@ namespace GUIHOMEASSIST.Application.ViewModels
                     }
                     break;
 
-
-
+                case "LEDWC":
+                    LedWC = Convert.ToBoolean(commandMessage.Value);
+                    break;
             }
         }
         public Tag GetTag(string tagName)
@@ -242,15 +246,17 @@ namespace GUIHOMEASSIST.Application.ViewModels
         {
             NhietDoChuan.Add(SetTemp);
             GetTag("Tempsetpoint").Value = SetTemp;
-            await _mqttClient.Publish("BTL/ESP32_PUB/tempsetpoint", JsonConvert.SerializeObject(GetTag("Tempsetpoint")), true);
+            await _mqttClient.Publish("BTL/ESP32_PUB/tempsetpoint", JsonConvert.SerializeObject(GetTag("Tempsetpoint")), false);
 
-            KhiGasChuan.Add(SetConcentration);
-            GetTag("Concentrationsetpoint").Value = SetConcentration;
-            await _mqttClient.Publish("BTL/ESP32_PUB/concentrationsetpoint", JsonConvert.SerializeObject(GetTag("Tempsetpoint")), true);
+            KhiGasChuan.Add(SetGas);
+            GetTag("Gassetpoint").Value = SetGas;
+            await _mqttClient.Publish("BTL/ESP32_PUB/gassetpoint", JsonConvert.SerializeObject(GetTag("Gassetpoint")), false);
         }
 
         private async void Connect()
         {
+            SeriesCollection1 = new();
+            SeriesCollection2 = new();
             await _mqttClient.ConnectAsync();
             await _mqttClient.Subscribe("BTL/ESP32_PUB");
             await _mqttClient.Subscribe("BTL/ESP32_PUB/humidity");
@@ -260,6 +266,7 @@ namespace GUIHOMEASSIST.Application.ViewModels
             await _mqttClient.Subscribe("BTL/ESP32_PUB/led2");
             await _mqttClient.Subscribe("BTL/ESP32_PUB/fan");
             await _mqttClient.Subscribe("BTL/ESP32_PUB/warning");
+            await _mqttClient.Subscribe("BTL/ESP32_PUB/ledwc");
             _timer.Enabled = true;
             
             LineNhietDo.Values = NhietDo;
@@ -271,6 +278,28 @@ namespace GUIHOMEASSIST.Application.ViewModels
             LineKhiGasChuan.Values= KhiGasChuan;
             SeriesCollection2.Add(LineKhiGas);
             SeriesCollection2.Add(LineKhiGasChuan);
+        }
+
+        private async void Disconnect()
+        {
+            await _mqttClient.DisconnectAsync();
+            _timer.Enabled = false;
+            _timerfan.Enabled = false;
+            _timerbell.Enabled = false;
+            Deg = new();
+            Temperature = new();
+            Concentration = new();
+            Humidity = new();
+            SetTemp = new();
+            SetGas = new();
+            ToggleLed1 = new();
+            ToggleLed2 = new();
+            Led1 = new();
+            Led2 = new();
+            Fanstatus = new();
+            LedWC = new();
+            Warning = new();
+            A = new();
         }
     }
 }

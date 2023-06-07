@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GUIHOMEASSIST.Application.ViewModels
+namespace HomeAssistantGUI.Application.ViewModels
 {
     public class BaseViewModel : IViewModel
     {

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GUIHOMEASSIST.Components
+namespace HomeAssistantGUI.Components
 {
     /// <summary>
     /// Interaction logic for Indicator.xaml

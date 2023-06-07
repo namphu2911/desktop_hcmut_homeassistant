@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GUIHOMEASSIST.Application.ViewModels
+namespace HomeAssistantGUI.Application.ViewModels
 {
     public interface IViewModel : INotifyPropertyChanged, IDisposable
     {

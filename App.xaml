@@ -1,8 +1,8 @@
-﻿<Application x:Class="GUIHOMEASSIST.App"
+﻿<Application x:Class="HomeAssistantGUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:GUIHOMEASSIST"
+             xmlns:local="clr-namespace:HomeAssistantGUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>

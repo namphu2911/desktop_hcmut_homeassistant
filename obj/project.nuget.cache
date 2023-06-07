@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xKPxTcAF3p7J42W8CE5T5eBh89CP+1TCf7H2M7S6kKJq0a7fukTNvXoCMNHwjra2MVY/Qcz8yMaIcJov9lFmaw==",
+  "dgSpecHash": "qt2TKIH2HH+Re9Oku896rix1nxewEJ0K8P3egLyAwIxCdt0PoqcSu+ZzvwfbhyTL3G2KZYW5JTOLXOIqCjCzag==",
   "success": true,
-  "projectFilePath": "C:\\Users\\DELL\\source\\repos\\HomeAssistantGUI\\GUIHOMEASSIST.csproj",
+  "projectFilePath": "D:\\Y32\\DoluongMT\\HomeAssistantGUI\\HomeAssistantGUI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DELL\\.nuget\\packages\\bouncycastle.netcore\\1.8.5\\bouncycastle.netcore.1.8.5.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.0\\communitytoolkit.mvvm.8.2.0.nupkg.sha512",

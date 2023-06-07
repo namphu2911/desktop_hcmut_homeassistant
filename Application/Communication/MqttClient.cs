@@ -4,7 +4,7 @@ using MQTTnet.Client;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace GUIHOMEASSIST.Application.Communication
+namespace HomeAssistantGUI.Application.Communication
 {
     public class MqttClient
     {

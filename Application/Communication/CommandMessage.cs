@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GUIHOMEASSIST.Application.Communication
+namespace HomeAssistantGUI.Application.Communication
 {
     public class CommandMessage
     {

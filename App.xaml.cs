@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace GUIHOMEASSIST
+namespace HomeAssistantGUI
 {
     /// <summary>
     /// Interaction logic for App.xaml
